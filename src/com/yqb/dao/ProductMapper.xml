@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.yqb.dao.ProductMapper">
+	  <select id="queryProduct" resultType="com.yqb.domain.Product">
+	    select * from product where id=#{id}
+	  </select>
+    <select id="queryProducts" resultType="com.yqb.domain.Product">
+       select * from product
+    </select>
+	
+	<delete id="deleteProduct">
+	  delete from product where id=#{id}
+	</delete>
+	
+	<insert id="insertProduct" useGeneratedKeys="true" keyProperty="id">
+	  insert into product values (0,#{name},#{price},#{createTime},#{detail})
+	</insert>
+	<update id="updateProduct">
+	update product 
+		set name=#{name},price=#{price},createTime=#{createTime},detail=#{detail}
+		where id=#{id}
+	</update>
+	
+	<select id="queryAllCategories" resultType="com.yqb.domain.Category">
+	  select * from category
+	</select>
+	
+	<select id="queryCategories" resultType="com.yqb.domain.Category">
+	    select c.* from product_category pc,category c
+	    where pc.pid=#{pid} and pc.cid=c.id
+	</select>
+	
+	<insert id="insertProductCategory">
+	insert into product_category values
+		<foreach collection="cids" item="cid" separator=",">
+			(0,#{pid},#{cid})
+		</foreach>
+	</insert>
+	<delete id="deleteProductCategory">
+		delete from product_category where pid=#{pid}
+	</delete>
+</mapper>
